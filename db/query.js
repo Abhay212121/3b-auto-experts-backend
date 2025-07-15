@@ -5,4 +5,8 @@ const getUserByMail = async (usermail) => {
     return rows[0]
 }
 
-export default { getUserByMail }
+const addProductInDb = async (name, category, price) => {
+    await pool.query(`INSERT INTO products(product_name,product_category,product_price) VALUES($1,$2,$3)`, [name, category, price])
+}
+
+export default { getUserByMail, addProductInDb }

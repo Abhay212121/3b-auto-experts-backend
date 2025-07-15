@@ -1,5 +1,8 @@
 import bcrypt from 'bcrypt'
 import db from '../db/query.js';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv'
+dotenv.config()
 
 const userLogin = async (req, res) => {
     const { email, password } = req.body.userData
@@ -16,7 +19,12 @@ const userLogin = async (req, res) => {
             return res.json({ status: 409, msg: 'Incorrect Password!' })
         }
 
-        return res.json({ status: 200, userId: user.user_id })
+        const payload = {
+            userId: user.user_id
+        }
+
+        const token = jwt.sign(payload, process.env.MY_SECRET_KEY)
+        return res.json({ status: 200, userId: user.user_id, token: token })
 
     } catch (error) {
         return res.json({ status: 500, msg: 'Internal Server Error' })

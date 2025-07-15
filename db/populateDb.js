@@ -60,6 +60,20 @@ CREATE TABLE IF NOT EXISTS products(
 );
 `
 
+const salesDataSQL = `
+DROP TABLE IF EXISTS sales_records;
+CREATE TABLE IF NOT EXISTS sales_records(
+record_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+product_category VARCHAR (255),
+product_name VARCHAR (255),
+selling_price INTEGER,
+sold_by VARCHAR (255),
+sold_to VARCHAR (255),
+sold_on DATE,
+payment_status VARCHAR (255)
+);
+`
+
 
 async function main() {
     console.log('Seeding.....')
@@ -67,13 +81,13 @@ async function main() {
         connectionString: process.env.CONNECTION_STRING
     })
     await client.connect()
-    // await client.query(productSQL)
-    for (const product of productsData) {
-        await client.query(
-            `INSERT INTO products (product_name, product_category, product_price) VALUES ($1, $2, $3)`,
-            [product.product_name, product.category, product.price]
-        );
-    }
+    await client.query(salesDataSQL)
+    // for (const product of productsData) {
+    //     await client.query(
+    //         `INSERT INTO products (product_name, product_category, product_price) VALUES ($1, $2, $3)`,
+    //         [product.product_name, product.category, product.price]
+    //     );
+    // }
     await client.end()
     console.log('Done!')
 }

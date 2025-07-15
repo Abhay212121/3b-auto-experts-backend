@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getUserData } from "../contollers/userController.js"
+import { userLogin } from "../contollers/userController.js"
 
 const userRoute = Router()
 
-userRoute.post('/', getUserData)
+userRoute.post('/login', userLogin)
 
 export default userRoute

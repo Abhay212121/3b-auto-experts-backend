@@ -1,5 +1,26 @@
-const getUserData = (req, res) => {
-    res.json({ msg: 'welcome user!' })
+import bcrypt from 'bcrypt'
+import db from '../db/query.js';
+
+const userLogin = async (req, res) => {
+    const { email, password } = req.body.userData
+    try {
+        const user = await db.getUserByMail(email)
+        console.log(user)
+
+        if (!user) {
+            return res.json({ status: 404, msg: 'User Not found!' })
+        }
+
+        const isMatch = await bcrypt.compare(password, user.user_password)
+        if (!isMatch) {
+            return res.json({ status: 409, msg: 'Incorrect Password!' })
+        }
+
+        return res.json({ status: 200, userId: user.user_id })
+
+    } catch (error) {
+        return res.json({ status: 500, msg: 'Internal Server Error' })
+    }
 }
 
-export { getUserData }
+export { userLogin }

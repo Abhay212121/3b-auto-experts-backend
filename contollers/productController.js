@@ -24,12 +24,24 @@ const addNewSale = async (req, res) => {
     const { productCategory, productName, soldAtPrice, soldByUser, soldForCar, soldOnDate, paymentStatus } = req.body.data
 
     try {
-        await db.addRecordInDb(productCategory, productName, soldAtPrice, soldByUser, soldForCar, soldOnDate, paymentStatus)
+        await db.addSaleRecordInDb(productCategory, productName, soldAtPrice, soldByUser, soldForCar, soldOnDate, paymentStatus)
         res.json({ status: 200, msg: 'Record added!' })
     } catch (error) {
         res.json({ status: 500, msg: error })
     }
-
 }
 
-export { addNewProduct, getAllProducts, addNewSale }
+const addNewPurchase = async (req, res) => {
+    const { productCategory, productName, purchasePrice, purchasedByUser, supplier } = req.body.data
+    console.log(productCategory, productName, purchasePrice, purchasedByUser, supplier)
+
+    try {
+        await db.addPurchaseRecordInDb(productCategory, productName, purchasePrice, purchasedByUser, supplier)
+        await db.addProductInDb(productName, productCategory, purchasePrice)
+        res.json({ status: 200, msg: 'Record added!' })
+    } catch (error) {
+        res.json({ status: 500, msg: error })
+    }
+}
+
+export { addNewProduct, getAllProducts, addNewSale, addNewPurchase }

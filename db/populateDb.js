@@ -34,10 +34,6 @@ const productsData = [
 ]
 
 
-// productsData.map((product) => {
-//     const addProductSQL = `INSERT INTO products(product_name,product_category,product_price) VALUES($1,$2,$3)`, [product.product_name, product.category, product.price];
-// })
-
 
 const userSQL = `
 DROP TABLE IF EXISTS users;
@@ -63,7 +59,7 @@ CREATE TABLE IF NOT EXISTS products(
 const salesDataSQL = `
 DROP TABLE IF EXISTS sales_records;
 CREATE TABLE IF NOT EXISTS sales_records(
-record_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+sale_record_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 product_category VARCHAR (255),
 product_name VARCHAR (255),
 selling_price INTEGER,
@@ -74,6 +70,18 @@ payment_status VARCHAR (255)
 );
 `
 
+const purchaseDataSQL = `
+DROP TABLE IF EXISTS purchase_records;
+CREATE TABLE IF NOT EXISTS purchase_records(
+purchase_record_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+product_category VARCHAR (255),
+product_name VARCHAR (255),
+purchase_price INTEGER,
+purchased_by VARCHAR (255),
+supplier VARCHAR (255)
+);
+`
+
 
 async function main() {
     console.log('Seeding.....')
@@ -81,7 +89,7 @@ async function main() {
         connectionString: process.env.CONNECTION_STRING
     })
     await client.connect()
-    await client.query(salesDataSQL)
+    await client.query(purchaseDataSQL)
     // for (const product of productsData) {
     //     await client.query(
     //         `INSERT INTO products (product_name, product_category, product_price) VALUES ($1, $2, $3)`,

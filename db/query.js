@@ -14,8 +14,12 @@ const getAllProductsFromDb = async (req, res) => {
     return rows
 }
 
-const addRecordInDb = async (product_category, product_name, selling_price, sold_by, sold_to, sold_on, payment_status) => {
+const addSaleRecordInDb = async (product_category, product_name, selling_price, sold_by, sold_to, sold_on, payment_status) => {
     await pool.query(`INSERT INTO sales_records(product_category,product_name,selling_price,sold_by,sold_to,sold_on,payment_status) VALUES($1,$2,$3,$4,$5,$6,$7)`, [product_category, product_name, selling_price, sold_by, sold_to, sold_on, payment_status])
 }
 
-export default { getUserByMail, addProductInDb, getAllProductsFromDb, addRecordInDb }
+const addPurchaseRecordInDb = async (productCategory, productName, purchasePrice, purchasedByUser, supplier) => {
+    await pool.query(`INSERT INTO purchase_records(product_category,product_name,purchase_price,purchased_by,supplier) VALUES($1,$2,$3,$4,$5)`, [productCategory, productName, purchasePrice, purchasedByUser, supplier])
+}
+
+export default { getUserByMail, addProductInDb, getAllProductsFromDb, addSaleRecordInDb, addPurchaseRecordInDb }

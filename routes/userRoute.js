@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { userLogin } from "../contollers/userController.js"
+import { fetchUserData, userLogin } from "../contollers/userController.js"
 
 const userRoute = Router()
 
 userRoute.post('/login', userLogin)
+userRoute.get('/getData', fetchUserData)
 
 export default userRoute

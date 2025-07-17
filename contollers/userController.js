@@ -31,4 +31,14 @@ const userLogin = async (req, res) => {
     }
 }
 
-export { userLogin }
+const fetchUserData = async (req, res) => {
+    const { name } = req.query
+    try {
+        const result = await db.getHomeDataFromDbByUser(name?.toLowerCase())
+        return res.json({ status: 200, data: result })
+    } catch (error) {
+        return res.json({ status: 500, msg: error.message })
+    }
+}
+
+export { userLogin, fetchUserData }

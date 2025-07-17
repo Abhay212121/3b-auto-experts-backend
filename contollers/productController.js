@@ -21,10 +21,11 @@ const getAllProducts = async (req, res) => {
 
 const addNewSale = async (req, res) => {
     console.log(req.body.data)
-    const { productCategory, productName, soldAtPrice, soldByUser, soldForCar, soldOnDate, paymentStatus } = req.body.data
+    const { productCategory, productName, soldAtPrice, soldByUser, soldForCar, soldToCustomer, soldOnDate, paymentStatus, quantity } = req.body.data
+
 
     try {
-        await db.addSaleRecordInDb(productCategory, productName, soldAtPrice, soldByUser, soldForCar, soldOnDate, paymentStatus)
+        await db.addSaleRecordInDb(productCategory, productName, soldAtPrice, soldByUser, soldToCustomer, soldForCar, soldOnDate, paymentStatus, quantity)
         res.json({ status: 200, msg: 'Record added!' })
     } catch (error) {
         res.json({ status: 500, msg: error })
@@ -40,7 +41,7 @@ const addNewPurchase = async (req, res) => {
         await db.addProductInDb(productName, productCategory, purchasePrice)
         res.json({ status: 200, msg: 'Record added!' })
     } catch (error) {
-        res.json({ status: 500, msg: error })
+        res.json({ status: 500, msg: error.message })
     }
 }
 

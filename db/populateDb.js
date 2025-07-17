@@ -62,9 +62,12 @@ CREATE TABLE IF NOT EXISTS sales_records(
 sale_record_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 product_category VARCHAR (255),
 product_name VARCHAR (255),
+product_id INTEGER REFERENCES products(product_id),
+quantity INTEGER,
 selling_price INTEGER,
 sold_by VARCHAR (255),
-sold_to VARCHAR (255),
+sold_to_customer VARCHAR (255),
+sold_to_car VARCHAR (255),
 sold_on DATE,
 payment_status VARCHAR (255)
 );
@@ -89,7 +92,7 @@ async function main() {
         connectionString: process.env.CONNECTION_STRING
     })
     await client.connect()
-    await client.query(purchaseDataSQL)
+    await client.query(salesDataSQL)
     // for (const product of productsData) {
     //     await client.query(
     //         `INSERT INTO products (product_name, product_category, product_price) VALUES ($1, $2, $3)`,
